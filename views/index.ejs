@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <script>
+        var socket =io();
+	$(function(){
+	    $('form').submit(function(){
+		var msj_text = $('#msj').val() ;
+		
+		if(msj_text === '') return false;
+		
+		socket.emit('message',msj_text) ;
+		$('#msj').val('').focus();
+		return false;
+	});
+});
+	socket.on('message',function(msj, id) {
+		$('#message').append($('<li>').text(id+":"+ msj));
+	});
+
+    </script> 
+  <div class="wrapper">
+	 <form action="/">
+	<input type="text" id="msj" placeholder="input">
+	<input type ="submit" id="btn" value="Enter">
+        </form>
+  </div>
+<ul id="message">
+</ul>
+  </body>
+</html>
